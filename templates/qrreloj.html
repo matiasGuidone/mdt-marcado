@@ -1,0 +1,140 @@
+{% extends 'base_empty.html' %}
+{% block content %}
+{% if istext %}
+<div id="alerta" style="position: absolute;width: 100%;height: 10%;"
+    class="alert text-white alert-{{alertstyle}} alert-dismissible fade show bg-{{alertstyle}}" role="alert">
+    <h3>{{textoalerta}}</h3>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+
+
+<div class="container" >
+
+    <div class="row">
+        <div style="display:block; margin:auto; font-size:2.25rem;" class="lead my-4"></div>
+    </div>
+    <div class="row">
+        <img class="img-thumbnail" src="{{ qr_image }}" style="display:block; margin:auto;width: 250px;">
+    </div>
+    {% if eligeopt %}
+    <form class="row" action="/marcar" method="post">
+        <input type="submit" value="I para ingreso" name="I" id='I'
+            class="lead rounded bg-success border float-left text-white p-2 col-3">
+
+        <div class="col-6"></div>
+
+        <input type="submit" value="E para egreso" name="E" id='E'
+            class="lead rounded bg-primary border float-right text-white p-2 col-3">
+
+        <input style="display: none;" autocomplete="off" maxlength="20" value="{{codigo}}" type="password" id="codigo" name="codigo"
+            placeholder="Código de marcado" class="form-control"></input>
+
+        <input style="display: none;" autocomplete="off" value="{{observaciones}}" type="text" id="observaciones" name="observaciones"
+            placeholder="observaciones" class="form-control"></input>
+         
+        <input style="display: none;"  type="text" id="sub" name="sub"
+             class="form-control"></input>
+
+    </form>
+    {% endif %}
+    <div class="row">
+        <div style="display:block; margin:auto;font-size: 2.00rem;" class="lead p-1 my-1 text-secondary rounded"
+            id="dia"></div>
+    </div>
+
+    <div class="row">
+        <div style="display:block; margin:auto;font-size: 2.00rem;" class="lead p-1 my-1 text-secondary rounded"
+            id="reloj"></div>
+    </div>
+    <div>
+        <button class="btn btn-info" id="marcManual" data-toggle="modal" style="margin: auto;display: block;"
+            data-target="#modalmarcado">Marcar manual</button>
+
+    </div>
+
+</div>
+<div class="modal fade" id="modalmarcado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <form action="/marcar" method="post">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content p-3">
+
+                <div class="form-group">
+                    <label for="title">Código de marcado</label>
+                    <input autocomplete="off" maxlength="20" value="" type="password" id="codigo" name="codigo"
+                        placeholder="Código de marcado" class="form-control"></input>
+                </div>
+                <div class="form-group">
+                    <label for="title">Observaciones</label>
+                    <input autocomplete="off" maxlength="150" value="" type="text" id="observaciones"
+                        name="observaciones" placeholder="Observaciones" class="form-control"></input>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mx-2" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-primary mx-2" value="Aceptar" />
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+<script language="JavaScript">
+
+
+        document.addEventListener('keypress', logKey);
+
+        function logKey(e) {
+        //console.log(` ${e.which}`);
+            if(e.which== 101){
+                if(document.getElementById('E') != null)
+                document.getElementById('E').click();
+            }
+            else if(e.which== 105){
+                if(document.getElementById('I') != null)
+                document.getElementById('I').click();
+            }
+            else  if (e.which == 13) {
+                document.getElementById('marcManual').click();
+            }
+        }
+
+    function mueveReloj() {
+        momentoActual = new Date();
+        var divreloj = document.getElementById("reloj");
+        var divdia = document.getElementById("dia");
+        divreloj.innerHTML = momentoActual.toTimeString().substring(0, 8);//horaImprimible;
+        var d = new Intl.DateTimeFormat('es-ES', { dateStyle: 'full', timeStyle: 'long' }).format(momentoActual).split(",");
+        divdia.innerHTML = d[0] + " " + d[1];
+        setTimeout("mueveReloj()", 1000);
+    }
+    window.onload = function () {
+        mueveReloj()
+        MyFadeFunction()
+        
+    };
+    var opacity = 1;
+
+    function MyFadeFunction() {
+        //console.log("string");
+        if (opacity > 0) {
+            opacity -= .01;
+            setTimeout(function () { MyFadeFunction() }, 50);
+        }
+        if (document.getElementById('alerta') != null) {
+            document.getElementById('alerta').style.opacity = opacity;
+        }
+        else { return; }
+
+    }
+
+    
+
+</script>
+{% endblock %}

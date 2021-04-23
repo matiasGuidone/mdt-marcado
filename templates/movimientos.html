@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h2>Movimientos</h2>
+            <a   href="/movimientos?del">Limpiar filtros</a>
+            <div class="float-right">
+            <nav  aria-label="Page navigation example">
+                <ul class="pagination">
+                   
+                  {% for pag in cantpaginas %}
+                  <li class="page-item"><a class="page-link" href="/movimientos?pag={{pag}}">{{pag+1}}</a></li> 
+                  {% endfor %}
+                  
+                </ul>
+              </nav>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <table class="table table-hover bg-light">
+                <thead>
+                    <tr>
+                        <!-- <th scope="col"> <a href="">Legajo</a> </th> -->
+                        <th scope="col"><input type="text" id ="txtnombre" onchange="filtrar('nombre','movimientos')" > <br> <a href="/movimientos?ord=6">Nombre y apellido</a> </th>
+                        <!-- <th scope="col"> <a href="">Número de socio</a></th> -->
+                        <th scope="col"><input type="text" maxlength="10" id ="txtfecha" placeholder="yyyy-MM-dd" onchange="filtrar('fecha','movimientos')" > <br> <a href="/movimientos?ord=2">Fecha</a></th>
+                        <th scope="col"><input type="text" maxlength="1" id ="txttipo" onchange="filtrar('tipo','movimientos')" > <br> <a href="/movimientos?ord=3">Tipo de movimiento</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movimientos in listmovimientos %}
+                    <tr>
+                        <!-- <th scope="row">{{movimientos.legajo}}</th> -->
+                        <td>{{movimientos.nombre}}, {{movimientos.apellido}}</td>
+                        <!-- <td>{{movimientos.nrosocio}}</td> -->
+                        <td>{{movimientos.fechahora}}</td>
+                        <td>{{movimientos.tipo}}</td>
+                        <td> <button type="button" class="btn btn-outline-success btn-sm" onclick="verMovimiento('{{movimientos.idmov}}')" data-toggle="modal"
+                            title="modificar" >
+                            Ver movimiento</button>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+  
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalver0" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <form action="/movimientos" method="post">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content p-3">
+            <h3>Detalle de movimiento</h3>
+            <hr>
+            <input type="text" style="display: none;" id="id-0" name="id"
+            value="0"></input>
+            <div class="form-group">
+                <label for="title">Nombre</label>
+                <input maxlength="100" disabled type="text" id="nombre-0" name="nombre" title="Nombre" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label for="title">Apellido</label>
+                <input maxlength="100" disabled type="text" id="apellido-0" name="apellido" title="Apellido" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label for="title">Legajo</label>
+                <input maxlength="4" disabled type="text" id="legajo-0" name="legajo" title="Legajo" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label for="title">Número de socio</label>
+                <input maxlength="10" disabled type="text" id="nrosocio-0" name="nrosocio" title="Número de socio"
+                    class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label for="title">Movimiento</label>
+                <input maxlength="10" disabled type="text" id="movimiento-0" name="movimiento" title="Tipo de movimiento"
+                    class="form-control"></input>
+            </div>
+            <div class="row">
+            <div class="form-group col-6">
+                <label for="title">Fecha</label>
+                <input maxlength="10" disabled type="date" id="fecha-0" name="fecha" title="Fecha de movimiento"
+                    class="form-control"></input>
+            </div>
+            <div class="form-group col-6">
+                <label for="title">Hora</label>
+                <input maxlength="10" disabled type="time" id="hora-0" name="hora" title="Hora de movimiento"
+                    class="form-control"></input>
+            </div>
+        </div>
+            <div class="form-group">
+                <label for="title">Observaciones</label>
+                <input maxlength="10" disabled type="text" id="observaciones-0" name="observaciones" title="Observaciones"
+                    class="form-control"></input>
+            </div>
+             
+             
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary mx-2" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div> 
+    </div>
+</form>
+</div>
+<!-- modal nuevo registro -->
+
+
+<script type="text/javascript" >
+
+    var listamovimientos =  JSON.parse('{{ listmovimientos|tojson  }}') ;  
+    function verMovimiento(id) {
+        //console.log(id)
+        verMovimientoJS(listamovimientos.find(p => p.idmov == +id));
+    }
+    function filtrar(d,e) {
+        //console.log(id)
+        filtrarJS(d,e);
+    }
+     
+</script>
+{% endblock %}

@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h2>Personal</h2>
+            <!-- <input type="text" class="col-3" placeholder="Nombre/Apellido"> 
+            <button class="btn btn-secondary float-left ">Filtrar</button>  -->
+            <button type="button" class="btn btn-info float-right" data-toggle="modal" title="modificar"
+                data-target="#modaledita0">
+                Nuevo
+            </button>
+
+        </div>
+        <div class="card-body">
+            <table class="table table-hover bg-light">
+                <thead>
+                    <tr>
+                        <th scope="col"> <a href="">Legajo</a> </th>
+                        <th scope="col"> <a href="">Nombre y apellido</a> </th>
+                        <th scope="col"> <a href="">Número de socio</a></th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for personal in listpersonal %}
+                    <tr>
+                        <th scope="row">{{personal.legajo}}</th>
+                        <td>{{personal.nombre}}, {{personal.apellido}}</td>
+                        <td>{{personal.nrosocio}}</td>
+                        <td> <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal"
+                                title="modificar" onclick="editarPersonal('{{personal.id}}')" >
+                                Editar</button>
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal"
+                                title="eliminar" onclick="borrar('','{{personal.id}}')" >
+                                Borrar</button>
+                        </td>
+                    </tr>
+
+                    <!-- <div class="modal fade" id="modaledita{{personal.id}}" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <form action="/personal" method="post">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content p-3">
+                                <h3>Editar personal</h3>
+                                <hr>
+                                <input type="text" style="display: none;" id="id-{{ personal.id }}" name="id"
+                                    value="{{ personal.id }}"></input>
+
+                                <div class="form-group">
+                                    <label for="title">Nombre</label>
+                                    <input maxlength="100" value="{{personal.nombre}}" type="text" id="nombre-{{ personal.id }}" name="nombre" placeholder="Nombre"
+                                        class="form-control"></input>
+                                </div>
+                                <div class="form-group">
+                                    <label for="title">Apellido</label>
+                                    <input maxlength="100" value="{{personal.apellido}}" type="text" id="apellido-{{ personal.id }}" name="apellido"
+                                        placeholder="Apellido" class="form-control"></input>
+                                </div>
+                                <div class="form-group">
+                                    <label for="title">Legajo</label>
+                                    <input maxlength="4" value="{{personal.legajo}}" type="text" id="legajo-{{ personal.id }}" name="legajo"
+                                        placeholder="Legajo" class="form-control"></input>
+                                </div>
+                                <div class="form-group">
+                                    <label for="title">Número de socio</label>
+                                    <input maxlength="10" value="{{personal.nrosocio}}" type="text" id="nrosocio-{{ personal.id }}" name="nrosocio"
+                                        placeholder="Número de socio" class="form-control"></input>
+                                </div>
+                                <div class="form-group">
+                                    <label for="title">Huella</label>
+                                    <input maxlength="3" value="{{personal.huella}}" type="text" id="nrosocio-{{ personal.id }}" name="huella"
+                                        placeholder="ID huella" class="form-control"></input>
+                                </div> -->
+                                <!-- id = None
+                                nombre = None
+                                apellido = None
+                                nrosocio = None
+                                codigomarcado = None
+                                horaentradamat = None
+                                horasalidamat = None
+                                horaentradaves = None
+                                horasalidaves = None
+                                horaentradasab = None
+                                horasalidasab = None
+                                huella = None
+                                legajo = None -->
+                                <!-- <div class="form-group">
+                                    <label for="title">Código de marcado</label>
+                                    <input maxlength="20" value="{{personal.codigomarcado}}" type="text" id="codigo-{{ personal.id }}" name="codigomarcado"
+                                        placeholder="Código de marcado" class="form-control"></input>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                        <label for="title">Entrada matutina</label>
+                                        <input value="{{personal.horaentradamat}}" type="time" id="entmatutina-{{ personal.id }}" name="horaentradamat"
+                                            placeholder="Hora de entrada matutino" class="form-control"></input>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="title">Salida matutina</label>
+                                        <input value="{{personal.horasalidamat}}" type="time" id="salmatutina-{{ personal.id }}" name="horasalidamat"
+                                            placeholder="Hora de salida matutino" class="form-control"></input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-6">
+
+                                        <label for="title">Entrada vespertina</label>
+                                        <input value="{{personal.horaentradaves}}" type="time" id="entvespertina-{{ personal.id }}" name="horaentradaves"
+                                            placeholder="Hora de entrada vespertina" class="form-control"></input>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="title">Salida vespertina</label>
+                                        <input value="{{personal.horasalidaves}}" type="time" id="salvespertina-{{ personal.id }}" name="horasalidaves"
+                                            placeholder="Hora de salida vespertina" class="form-control"></input>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                        <label for="title">Entrada sábados</label>
+                                        <input value="{{personal.horaentradasab}}" type="time" id="entsabados-{{ personal.id }}" name="horaentradasab"
+                                            placeholder="Hora de entrada sábados" class="form-control"></input>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="title">Salida sábados</label>
+                                        <input value="{{personal.horasalidasab}}" type="time" id="salsabados-{{ personal.id }}" name="horasalidasab"
+                                            placeholder="Hora de salida sábados" class="form-control"></input>
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary mx-2"
+                                        data-dismiss="modal">Cancelar</button>
+                                        <input type="submit" class="btn btn-primary mx-2" value="Guardar" />
+                                </div>
+                            </div>
+
+                        </div>
+                        </form>
+                    </div> -->
+
+ 
+
+                    
+
+                    {% endfor %}
+                </tbody>
+            </table>
+  
+        </div>
+    </div>
+</div>
+<!-- Modal eliminación-->
+<div class="modal fade" id="modalelimina" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                       
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <input type="text" style="display: none;" id="ide" name="id"></input>
+        <div class="modal-body">
+            ¿ Confirma la eliminación del registro ?
+        </div>
+        <div class="modal-footer">
+           
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="borrar('personal')" data-dismiss="modal" >Eliminar</button>
+        
+    </div>
+    </div>
+    </div>
+
+</div>
+<!-- Modal eliminación -->
+<div class="modal fade" id="modaledita0" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <form action="/personal" method="post">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content p-3">
+            <h3>Personal</h3>
+            <hr>
+            <input type="text" style="display: none;" id="id-0" name="id"></input>
+            <div class="form-group">
+                <label for="title">Nombre</label>
+                <input maxlength="100" type="text" id="nombre-0" name="nombre" placeholder="Nombre" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label for="title">Apellido</label>
+                <input maxlength="100" type="text" id="apellido-0" name="apellido" placeholder="Apellido" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label for="title">Legajo</label>
+                <input maxlength="4" type="text" id="legajo-0" name="legajo" placeholder="Legajo" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label for="title">Número de socio</label>
+                <input maxlength="10" type="text" id="nrosocio-0" name="nrosocio" placeholder="Número de socio"
+                    class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label for="title">Huella</label>
+                <input maxlength="3" type="text" id="huella-0" name="huella" placeholder="ID huella" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label for="title">Código de marcado</label>
+                <input maxlength="20" type="text" id="codigomarcado-0" name="codigomarcado" placeholder="Código de marcado"
+                    class="form-control"></input>
+            </div>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="title">Entrada matutina</label>
+                    <input type="time" id="entmatutina-0" name="horaentradamat" placeholder="Hora de entrada matutino"
+                        class="form-control"></input>
+                </div>
+                <div class="form-group col-6">
+                    <label for="title">Salida matutina</label>
+                    <input type="time" id="salmatutina-0" name="horasalidamat" placeholder="Hora de salida matutino"
+                        class="form-control"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-6">
+
+                    <label for="title">Entrada vespertina</label>
+                    <input type="time" id="entvespertina-0" name="horaentradaves"
+                        placeholder="Hora de entrada vespertina" class="form-control"></input>
+                </div>
+                <div class="form-group col-6">
+                    <label for="title">Salida vespertina</label>
+                    <input type="time" id="salvespertina-0" name="horasalidaves" placeholder="Hora de salida vespertina"
+                        class="form-control"></input>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="title">Entrada sábados</label>
+                    <input type="time" id="entsabados-0" name="horaentradasab" placeholder="Hora de entrada sábados"
+                        class="form-control"></input>
+                </div>
+                <div class="form-group col-6">
+                    <label for="title">Salida sábados</label>
+                    <input type="time" id="salsabados-0" name="horasalidasab" placeholder="Hora de salida sábados"
+                        class="form-control"></input>
+                </div>
+            </div>
+             
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary mx-2" data-dismiss="modal">Cancelar</button>
+                <input type="submit" class="btn btn-primary mx-2" value="Guardar" />
+ 
+            </div>
+        </div> 
+    </div>
+</form>
+</div>
+<!-- modal nuevo registro -->
+ 
+
+<script type="text/javascript"  >
+    var listpersonal =  JSON.parse('{{ listpersonal|tojson  }}') ; 
+    console.log(listpersonal);
+    function borrar(dir, id = null) {
+        if(!id){
+             borrarJS(dir);
+        }
+        else{
+            document.getElementById('ide')['value'] = id;
+            $('#modalelimina').modal('show')
+        }
+        
+    }
+    function editarPersonal(id) {
+        console.log(id)
+        editarPersonalJS(listpersonal.find(p => p.id == +id));
+    }
+    
+</script> 
+{% endblock %}

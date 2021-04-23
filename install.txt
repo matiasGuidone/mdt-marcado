@@ -1,0 +1,21 @@
+//flask
+pip install flask
+
+//mysql
+pip install mysql-connector-python
+
+sudo apt-get install python3-mysql.connector
+
+//qrcode
+sudo apt-get install python3-qrcode
+
+//cors
+pip install -U flask-cors
+
+//wsgi
+sudo apt-get install libapache2-mod-wsgi-py3
+
+configurar ip de flask en apache
+sudo gedit /etc/apache2/sites-available/AppFlask.conf
+
+systemctl restart apache2
